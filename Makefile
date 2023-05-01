@@ -5,11 +5,11 @@ clean:
 	@rm -rf server
 
 server: main.o httpd.o
-	gcc -o server $^
+	$(CC) -o server $^ -I $(HONGGFUZZ_DIR)/libhfnetdriver/libhfnetdriver.a -lpthread
 
 main.o: main.c httpd.h
-	gcc -c -o main.o main.c
+	$(CC) -c -o main.o main.c 
 
 httpd.o: httpd.c httpd.h
-	gcc -c -o httpd.o httpd.c
+	$(CC) -c -o httpd.o httpd.c
 

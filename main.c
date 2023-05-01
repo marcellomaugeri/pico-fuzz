@@ -8,8 +8,12 @@
 #define INDEX_HTML "/index.html"
 #define NOT_FOUND_HTML "/404.html"
 
-int main(int c, char **v) {
-  char *port = c == 1 ? "8000" : v[1];
+#ifdef HFND_FUZZING_ENTRY_FUNCTION
+ HFND_FUZZING_ENTRY_FUNCTION(int argc, const char *const *argv) {
+#else
+ int main(int argc, const char *const *argv) {
+#endif
+  const char *port = argc == 1 ? "8080" : argv[1];
   serve_forever(port);
   return 0;
 }
@@ -39,6 +43,18 @@ int read_file(const char *file_name) {
     fclose(file);
   }
   return err;
+}
+
+int is_prime(long long int n) {
+    if (n <= 1) {
+        return 0;
+    }
+    for (long long i = 2; i * i <= n; i++) {
+        if (n%i == 0) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 void route() {
@@ -91,5 +107,18 @@ void route() {
     }
   }
 
+  POST("/is_prime") {
+    long long int n;
+    sscanf(payload, "%lld", &n);
+    int check = 0;
+    //Let's check 1000 times just to be sure!
+    for (int i = 0; i < 1; i++) {
+      check = is_prime(n) ? 1 : check;
+    }
+    HTTP_200;
+    printf("Checking if %lld is prime...\n", n);
+    printf(check ? "Yes, it is prime\n" : "No, it is not prime\n");
+  }
+  
   ROUTE_END()
 }
