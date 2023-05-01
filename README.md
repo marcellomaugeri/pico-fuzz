@@ -1,13 +1,15 @@
 # Pico HTTP Server in C to fuzz with Honggfuzz NetDriver
 ## How to use
-1. export HONGGFUZZ_DIR=/path/to/honggfuzz
-2. CC=$HONGGFUZZ_DIR/hfuzz_cc/hfuzz-clang make
-3. _HF_TCP_PORT=8080 $HONGGFUZZ_DIR/honggfuzz -i ./corpus --dict $HONGGFUZZ_DIR/examples/apache-httpd/httpd.wordlist --workspace ./crashes -output ./new_corpus -- ./server
+```
+export HONGGFUZZ_DIR=/path/to/honggfuzz
+CC=$HONGGFUZZ_DIR/hfuzz_cc/hfuzz-clang make
+_HF_TCP_PORT=8080 $HONGGFUZZ_DIR/honggfuzz -i ./corpus --dict $HONGGFUZZ_DIR/examples/apache-httpd/httpd.wordlist --workspace ./crashes -output ./new_corpus -- ./server
+```
 
 ## Links
 Based on <https://www.cnblogs.com/hac425/p/9416915.html>
 
-
+git add .
 ### Original README of Pico HTTP Server in C
 
 This is a very simple HTTP server for Unix, using `fork()`. It's very easy to use.
